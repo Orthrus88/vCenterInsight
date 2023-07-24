@@ -26,8 +26,7 @@ class MyClient(discord.Client):
             bot_response = await reportVMs(message)
             await message.channel.send(bot_response)
 
-async def reportVMs(ctx):
-    print("reportVMs function called")  # Remove... This is for testing only.
+async def reportVMs(message):
     try:
         # Connect to the vCenter server
         s = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
@@ -44,11 +43,11 @@ async def reportVMs(ctx):
         # Report active VMs on Discord
         if active_vms:
             report_message = "\n".join(active_vms)
-            await ctx.send(f"Active VMs in specific folder {folder_path}:\n{report_message}")
+            await message.channel.send(f"Active VMs in specific folder {folder_path}:\n{report_message}")
         else:
-            await ctx.send(f"No active VMs found in folder {folder_path}.")
+            await message.channel.send(f"No active VMs found in folder {folder_path}.")
     except Exception as e:
-        await ctx.send(f"Error: {str(e)}")
+        await message.channel.send(f"Error: {str(e)}")
 
 def get_active_vms_in_folders(vcenter_instance, folder_path):
     active_vms = []
