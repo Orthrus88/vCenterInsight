@@ -9,26 +9,23 @@ from pyVim.connect import SmartConnect, Disconnect, vim
 load_dotenv()
 
 # Discord bot token
-discord_bot_token = os.getenv('discord_token')
+discord_token = os.getenv('discord_token')
 
 # vCenter server details
 vcenter_url = os.getenv('vcenter_url')
 vcenter_username = os.getenv('vcenter_username')
 vcenter_password = os.getenv('vcenter_password')
 
-# Discord intents setup
-intents = discord.Intents.default()
-intents.guilds = True
-intents.messages = True
+class MyClient(discord.Client):
+    async def on_ready(self):
+        print("Successfully logged in as: ", self.user)
+    async def on_message(self, message):
+        if message.author == self.user:
+            return
+        if message.content.startswith(('/reportVMs')):
+            bot_response = await reportVMs(message)
+            await message.channel.send(bot_response)
 
-# Discord bot setup
-bot = commands.Bot(command_prefix='!', intents=intents)
-
-@bot.event
-async def on_ready():
-    print(f'Logged in as {bot.user.name} - {bot.user.id}')
-
-@bot.command()
 async def reportVMs(ctx):
     print("reportVMs function called")  # Remove... This is for testing only.
     try:
@@ -88,5 +85,7 @@ def find_folder(folder, folder_path):
                 return find_folder(child, folder_path[1:])
     return None
 
-# Run the Discord bot
-bot.run(discord_bot_token)
+intents = discord.Intents.default()
+intents.message_content = True
+
+client = MyClient(intents=intents)
