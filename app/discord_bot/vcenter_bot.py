@@ -1,15 +1,20 @@
 import discord
 import ssl
+import os
 from discord.ext import commands
+from dotenv import load_dotenv
 from pyVim.connect import SmartConnect, Disconnect, vim
 
+# Load the environment vars from the .env file
+load_dotenv()
+
 # Discord bot token
-discord_bot_token = ''
+discord_bot_token = os.getenv('discord_token')
 
 # vCenter server details
-vcenter_url = 
-vcenter_username = 
-vcenter_password = 
+vcenter_url = os.getenv('vcenter_url')
+vcenter_username = os.getenv('vcenter_username')
+vcenter_password = os.getenv('vcenter_password')
 
 # Discord intents setup
 intents = discord.Intents.default()
@@ -23,15 +28,17 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'Logged in as {bot.user.name} - {bot.user.id}')
 
+@bot.command()
 async def reportVMs(ctx):
+    print("reportVMs function called")  # Remove... This is for testing only.
     try:
         # Connect to the vCenter server
         s = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
         s.verify_mode = ssl.CERT_NONE
-        vcenter_instance = SmartConnect(host=vcenter_url, user=vcenter_username, pwd=vcenter_password, ssl=s)
+        vcenter_instance = SmartConnect(host=vcenter_url, user=vcenter_username, pwd=vcenter_password, sslContext=s)
 
-        # Get VMs in specific folder
-        folder_path = '/THOUSE/GeekWerkesLab/'
+        # Get VMs in a specific folder
+        folder_path = '/THOUSE/vm/GeekWerkesLab/'
         active_vms = get_active_vms_in_folders(vcenter_instance, folder_path)
 
         # Disconnect from the vCenter server
@@ -48,11 +55,11 @@ async def reportVMs(ctx):
 
 def get_active_vms_in_folders(vcenter_instance, folder_path):
     active_vms = []
-    
+
     # Get the root folder
     content = vcenter_instance.RetrieveContent()
     root_folder = content.rootFolder
-    
+
     # Find the target folder by traversing the inventory tree
     folder = None
     for datacenter in root_folder.childEntity:
