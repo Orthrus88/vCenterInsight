@@ -7,9 +7,9 @@ from pyVim.connect import SmartConnect, Disconnect, vim
 discord_bot_token = ''
 
 # vCenter server details
-vcenter_url = 'YOUR_VCENTER_SERVER_URL'
-vcenter_username = 'YOUR_VCENTER_USERNAME'
-vcenter_password = 'YOUR_VCENTER_PASSWORD'
+vcenter_url = 
+vcenter_username = 
+vcenter_password = 
 
 # Discord intents setup
 intents = discord.Intents.default()
