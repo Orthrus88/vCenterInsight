@@ -12,7 +12,7 @@ load_dotenv()
 discord_token = os.getenv('discord_token')
 
 # vCenter server details
-vcenter_url = 'https://vcenter.thouse.lab'
+vcenter_url = "172.16.1.150"
 vcenter_username = os.getenv('vcenter_username')
 vcenter_password = os.getenv('vcenter_password')
 
@@ -33,7 +33,7 @@ async def reportVMs(message):
         vcenter_instance = SmartConnect(host=vcenter_url, user=vcenter_username, pwd=vcenter_password, sslContext=s)
 
         # Get VMs in a specific folder
-        folder_path = '/THOUSE/vm/GeekWerkesLab/'
+        folder_path = '/THOUSE/GeekWerkes Lab/Graham'
         active_vms = get_active_vms_in_folders(vcenter_instance, folder_path)
 
         # Disconnect from the vCenter server
