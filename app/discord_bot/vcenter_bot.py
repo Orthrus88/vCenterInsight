@@ -12,7 +12,7 @@ load_dotenv()
 discord_token = os.getenv('discord_token')
 
 # vCenter server details
-vcenter_url = os.getenv('vcenter_url')
+vcenter_url = 'https://vcenter.thouse.lab'
 vcenter_username = os.getenv('vcenter_username')
 vcenter_password = os.getenv('vcenter_password')
 
@@ -23,8 +23,7 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
         if message.content.startswith(('/reportVMs')):
-            bot_response = await reportVMs(message)
-            await message.channel.send(bot_response)
+            await reportVMs(message)
 
 async def reportVMs(message):
     try:
