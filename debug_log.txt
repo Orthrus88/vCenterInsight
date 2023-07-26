@@ -1,0 +1,2 @@
+DEBUG:root:Attempting to find VMs in folder: /THOUSE/
+DEBUG:root:Active VMs found in folder: []
